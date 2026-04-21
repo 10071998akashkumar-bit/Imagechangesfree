@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelPerfect - Premium Image & Document Resizer</title>
+    <meta name="description" content="Resize your images, signatures, and create passport size photos instantly. Fast, secure, and beautiful.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="bg-mesh">
+        <div class="blob color-1"></div>
+        <div class="blob color-2"></div>
+        <div class="blob color-3"></div>
+    </div>
+
+    <div class="app-container">
+        <header class="glass-nav">
+            <div class="logo">
+                <i class="fa-solid fa-compress"></i>
+                <span>PixelPerfect</span>
+            </div>
+            <nav>
+                <a href="#" class="active">Resize Image</a>
+                <a href="#">Compress PDF</a>
+                <a href="#">Word/Docs</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-primary-outline"><i class="fa-solid fa-crown"></i> Go Premium</button>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero-section">
+                <h1 class="gradient-text">Resize Anything, Instantly.</h1>
+                <p class="subtitle">Pixel-perfect resizing for signatures, passport photos, and documents. No server uploads needed.</p>
+                
+                <div class="tools-grid">
+                    <button class="tool-card" onclick="selectPreset('passport')">
+                        <div class="tool-icon"><i class="fa-solid fa-id-badge"></i></div>
+                        <h3>Passport Photo</h3>
+                        <p>3.5 x 4.5 cm</p>
+                    </button>
+                    <button class="tool-card" onclick="selectPreset('signature')">
+                        <div class="tool-icon"><i class="fa-solid fa-signature"></i></div>
+                        <h3>Signature</h3>
+                        <p>256 x 64 px</p>
+                    </button>
+                    <button class="tool-card active" onclick="selectPreset('custom')">
+                        <div class="tool-icon"><i class="fa-solid fa-expand"></i></div>
+                        <h3>Custom Size</h3>
+                        <p>Any dimension</p>
+                    </button>
+                </div>
+            </section>
+
+            <section class="workspace glass-panel">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" hidden>
+                    <div class="upload-content">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <h2>Drag & Drop your file here</h2>
+                        <p>or click to browse from your device</p>
+                        <button class="btn-primary" onclick="document.getElementById('fileInput').click()">Select File</button>
+                    </div>
+                </div>
+
+                <div class="editor-area" id="editorArea" style="display: none;">
+                    <div class="preview-section">
+                        <div class="image-container">
+                            <img id="imagePreview" src="" alt="Preview">
+                        </div>
+                        <div class="file-info">
+                            <span id="originalInfo"><i class="fa-solid fa-image"></i> Original: 0x0 | 0 KB</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                            <span id="newInfo" class="highlight"><i class="fa-solid fa-compress"></i> New: 0x0 | ~0 KB</span>
+                        </div>
+                    </div>
+
+                    <div class="controls-section glass-panel-inner">
+                        <h3>Resize Settings</h3>
+                        
+                        <div class="control-group">
+                            <label>Resize By</label>
+                            <div class="segmented-control">
+                                <button class="segment active" data-by="pixels">Pixels</button>
+                                <button class="segment" data-by="percentage">Percentage</button>
+                            </div>
+                        </div>
+
+                        <div class="dimensions-grid">
+                            <div class="input-group">
+                                <label>Width</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="resizeWidth" value="1080">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                            
+                            <div class="lock-aspect">
+                                <button id="lockRatioBtn" class="active" title="Lock Aspect Ratio">
+                                    <i class="fa-solid fa-link"></i>
+                                </button>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Height</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="resizeHeight" value="1080">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>Format</label>
+                            <select id="exportFormat" class="modern-select">
+                                <option value="image/jpeg">JPG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group" id="qualityGroup">
+                            <label>Quality (<span id="qualityValue">90</span>%)</label>
+                            <input type="range" id="exportQuality" min="10" max="100" value="90" class="modern-range">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-secondary" id="cancelBtn">Cancel</button>
+                            <button class="btn-primary pulse-btn" id="downloadBtn">
+                                <i class="fa-solid fa-download"></i> Download Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2026 PixelPerfect. Designed for speed and privacy.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
