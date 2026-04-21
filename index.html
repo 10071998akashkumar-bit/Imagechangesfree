@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelPerfect - Premium Image Resizer</title>
+    <title>PixelPerfect - Premium Image & Document Resizer</title>
+    <meta name="description" content="Resize your images, signatures, and create passport size photos instantly. Fast, secure, and beautiful.">
     <link rel="stylesheet" href="style.css">
+    <!-- Modern Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.3.0/dist/imgly-background-removal.js"></script>
 </head>
 <body>
     <div class="bg-mesh">
@@ -24,367 +24,126 @@
                 <i class="fa-solid fa-compress"></i>
                 <span>PixelPerfect</span>
             </div>
-            <nav class="desktop-nav">
-                <a href="#" onclick="window.showComingSoon('Merge PDFs'); return false;">Merge PDF's</a>
-                <a href="#" class="active" onclick="window.switchTool('view-resize'); return false;">Resize Image Pixel</a>
-                <a href="#" onclick="window.switchTool('view-resize'); window.selectExamPreset('photo'); return false;">Passport Size Photo</a>
-                <a href="#" onclick="window.showComingSoon('Convert Image Format'); return false;">Convert Image <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i></a>
-                <a href="#" onclick="window.switchTool('view-resize'); document.getElementById('compressAlso').checked = true; document.getElementById('compressAlso').dispatchEvent(new Event('change')); return false;">Compress Image</a>
-                <a href="#" onclick="window.showComingSoon('Compress PDF'); return false;">Compress PDF</a>
-                <a href="#" onclick="window.showComingSoon('Crop Image'); return false;">Crop Image</a>
+            <nav>
+                <a href="#" class="active">Resize Image</a>
+                <a href="#">Compress PDF</a>
+                <a href="#">Word/Docs</a>
             </nav>
+            <div class="header-actions">
+                <button class="btn-primary-outline"><i class="fa-solid fa-crown"></i> Go Premium</button>
+            </div>
         </header>
 
-        <main class="dashboard-layout">
-            <!-- Left Side Main Area -->
-            <div class="main-content" id="mainContentArea">
-                <!-- TOOL: RESIZE IMAGE -->
-                <div class="tool-view active" id="view-resize">
-                    <div class="hero-header">
-                        <h2>Resize Image Online</h2>
-                    </div>
-                    
-                    <section class="workspace glass-panel">
-                    <div class="upload-area" id="uploadArea">
-                        <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" hidden>
-                        <div class="upload-content">
-                            <p class="upload-text">Select Or Drag & Drop Images Here</p>
-                            <button class="btn-primary" onclick="document.getElementById('fileInput').click()">Select Images</button>
-                        </div>
-                    </div>
-
-                    <div class="editor-area" id="editorArea" style="display: none;">
-                        <div class="preview-section">
-                            <div class="image-container">
-                                <img id="imagePreview" src="" alt="Preview">
-                            </div>
-                            <div class="file-info">
-                                <span id="originalInfo"><i class="fa-solid fa-image"></i> Original: 0x0 | 0 KB</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                                <span id="newInfo" class="highlight"><i class="fa-solid fa-compress"></i> New: 0x0 | ~0 KB</span>
-                            </div>
-                        </div>
-
-                        <div class="controls-section glass-panel-inner">
-                            <div class="radio-group center-group">
-                                <label><input type="radio" name="unit" value="pixels" checked> Pixel</label>
-                                <label><input type="radio" name="unit" value="cm"> Centimeter</label>
-                                <label><input type="radio" name="unit" value="inch"> Inch</label>
-                            </div>
-                            
-                            <div class="checkbox-group center-group">
-                                <label><input type="checkbox" id="maintainAspect" checked> Maintain Aspect Ratio</label>
-                            </div>
-
-                            <div class="dimensions-inline center-group">
-                                <div class="dim-input">
-                                    <input type="number" id="resizeWidth" placeholder="Width">
-                                </div>
-                                <span class="cross">X</span>
-                                <div class="dim-input">
-                                    <input type="number" id="resizeHeight" placeholder="Height">
-                                </div>
-                            </div>
-
-                            <div class="checkbox-group center-group" style="margin-top: 1rem;">
-                                <label><input type="checkbox" id="compressAlso"> Compress Image Also</label>
-                            </div>
-                            
-                            <div id="compressOptions" style="display: none;" class="center-group">
-                                <input type="number" id="targetSizeKb" placeholder="Target Size (KB)">
-                            </div>
-
-                            <div class="radio-group center-group output-group" style="margin-top: 1rem;">
-                                <span>Output: </span>
-                                <label><input type="radio" name="format" value="image/jpeg" checked> JPEG</label>
-                                <label><input type="radio" name="format" value="image/png"> PNG</label>
-                                <label><input type="radio" name="format" value="image/webp"> WEBP</label>
-                            </div>
-
-                            <div class="action-buttons center-group">
-                                <button class="btn-primary pulse-btn" id="downloadBtn">Resize Image</button>
-                            </div>
-                            <button class="btn-secondary" id="cancelBtn" style="margin-top:1rem; width:100%;">Cancel & Back</button>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="exam-guide glass-panel" style="margin-top: 2rem;">
-                    <h3 style="margin-bottom: 0.5rem; color: #fff;">📚 Competitive Exams Guide</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">
-                        Click "Apply" to automatically configure the resize tool for your exam.
-                    </p>
-                    
-                    <h4 style="margin: 1.5rem 0 1rem; color: #a5b4fc; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">🔴 SSC Exams (Staff Selection Commission)</h4>
-                    <div class="guide-grid">
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>📸 SSC Photograph</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('ssc-photo')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 20 KB – 50 KB</li>
-                                <li><strong>Dimensions:</strong> 3.5 cm × 4.5 cm</li>
-                                <li><strong>Background:</strong> White or light-colored</li>
-                                <li><strong>Note:</strong> Recent color photo, no spectacles/cap, frontal view. Some exams require live photos.</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>✍️ SSC Signature</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('ssc-signature')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 10 KB – 20 KB</li>
-                                <li><strong>Dimensions:</strong> 4.0 cm × 2.0 cm</li>
-                                <li><strong>Format:</strong> JPG/JPEG</li>
-                                <li><strong>Note:</strong> Signed on white paper with a black ink pen.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <h4 style="margin: 2rem 0 1rem; color: #facc15; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">🚂 Railway Exams (RRB / RRC)</h4>
-                    <div class="guide-grid">
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>📸 Railway Photograph</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('railway-photo')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 20 KB – 50 KB</li>
-                                <li><strong>Dimensions:</strong> 240 × 320 px</li>
-                                <li><strong>Background:</strong> White</li>
-                                <li><strong>Note:</strong> Recent color photo, no cap/sunglasses.</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>✍️ Railway Signature</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('railway-signature')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 10 KB – 40 KB</li>
-                                <li><strong>Dimensions:</strong> 140 × 60 px</li>
-                                <li><strong>Format:</strong> JPG/JPEG</li>
-                                <li><strong>Note:</strong> Black ink, running signature (not capital).</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <h4 style="margin: 2rem 0 1rem; color: #60a5fa; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">🏦 Banking Exams (IBPS / SBI / Federal)</h4>
-                    <div class="guide-grid">
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>📸 Banking Photograph</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('banking-photo')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 20 KB – 50 KB</li>
-                                <li><strong>Dimensions:</strong> 200 × 230 px</li>
-                                <li><strong>Background:</strong> White/light-colored</li>
-                                <li><strong>Note:</strong> Neutral expression, no spectacles/caps glare.</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>✍️ Banking Signature</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('banking-signature')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 10 KB – 20 KB</li>
-                                <li><strong>Dimensions:</strong> 140 × 60 px</li>
-                                <li><strong>Note:</strong> Black ink. Must NOT be in CAPITAL LETTERS.</li>
-                            </ul>
-                        </div>
-
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>🖼️ Left Thumb</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('banking-thumb')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 20 KB – 50 KB</li>
-                                <li><strong>Dimensions:</strong> 240 × 240 px</li>
-                                <li><strong>Note:</strong> Blue or Black ink on white paper.</li>
-                            </ul>
-                        </div>
-
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>📝 Declaration</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('banking-declaration')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 50 KB – 100 KB</li>
-                                <li><strong>Dimensions:</strong> 800 × 400 px</li>
-                                <li><strong>Note:</strong> English text, white paper with black ink.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <h4 style="margin: 2rem 0 1rem; color: #34d399; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">🏛️ State-Level Exams</h4>
-                    <div class="guide-grid">
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>📸 State Photograph</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('state-photo')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 50 KB – 100 KB</li>
-                                <li><strong>Dimensions:</strong> 3.5 cm × 4.5 cm</li>
-                                <li><strong>Background:</strong> White or light-colored</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="guide-card">
-                            <div class="guide-header">
-                                <h4>✍️ State Signature</h4>
-                                <button class="btn-primary-outline btn-small" onclick="selectExamPreset('state-signature')">Apply</button>
-                            </div>
-                            <ul>
-                                <li><strong>File Size:</strong> 20 KB – 50 KB</li>
-                                <li><strong>Dimensions:</strong> ~3.5 cm × 1.5 cm</li>
-                                <li><strong>Note:</strong> Black or dark blue ink on white paper.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-                </div> <!-- End Tool Resize -->
-
-                <!-- TOOL: SIGNATURE MAKER -->
-                <div class="tool-view" id="view-signature" style="display: none;">
-                    <div class="hero-header">
-                        <h2>Draw Your Signature</h2>
-                        <p class="hint-text" style="color:var(--text-muted);">Create a clean digital signature for exam forms.</p>
-                    </div>
-                    <section class="workspace glass-panel" style="text-align: center;">
-                        <canvas id="signatureCanvas" width="600" height="250" style="background: white; border-radius: var(--radius-md); border: 2px dashed var(--primary); cursor: crosshair; touch-action: none; max-width: 100%;"></canvas>
-                        <div class="controls-section glass-panel-inner" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; align-items: center;">
-                            <label>Ink Color: </label>
-                            <input type="color" id="sigColor" value="#000000" style="width: 40px; height: 40px; cursor: pointer; border: none; background: transparent;">
-                            <button class="btn-secondary" onclick="clearSignature()"><i class="fa-solid fa-eraser"></i> Clear</button>
-                            <button class="btn-primary" onclick="downloadSignature()"><i class="fa-solid fa-download"></i> Download Signature</button>
-                        </div>
-                    </section>
-                </div>
-
-                <!-- TOOL: IMAGES TO PDF -->
-                <div class="tool-view" id="view-img-pdf" style="display: none;">
-                    <div class="hero-header">
-                        <h2>Images to PDF Converter</h2>
-                        <p class="hint-text" style="color:var(--text-muted);">Combine multiple images into a single PDF document.</p>
-                    </div>
-                    <section class="workspace glass-panel">
-                        <div class="upload-area" id="pdfUploadArea">
-                            <input type="file" id="pdfFileInput" accept="image/*" multiple hidden>
-                            <div class="upload-content">
-                                <p class="upload-text">Select Multiple Images</p>
-                                <button class="btn-primary" onclick="document.getElementById('pdfFileInput').click()">Choose Files</button>
-                            </div>
-                        </div>
-                        <div id="pdfEditorArea" style="display:none; text-align:center;">
-                            <h4 id="pdfFileCount" style="margin-bottom: 1rem;">0 Images Selected</h4>
-                            <button class="btn-primary pulse-btn" id="generatePdfBtn">Generate PDF</button>
-                            <button class="btn-secondary" onclick="resetPdfTool()" style="margin-top:1rem;">Cancel</button>
-                        </div>
-                    </section>
-                </div>
-
-                <!-- TOOL: PDF TO IMAGES -->
-                <div class="tool-view" id="view-pdf-img" style="display: none;">
-                    <div class="hero-header">
-                        <h2>PDF to Images</h2>
-                        <p class="hint-text" style="color:var(--text-muted);">Extract every page of a PDF into high-quality JPEG images.</p>
-                    </div>
-                    <section class="workspace glass-panel">
-                        <div class="upload-area" id="pdfToImgUploadArea">
-                            <input type="file" id="pdfToImgInput" accept="application/pdf" hidden>
-                            <div class="upload-content">
-                                <p class="upload-text">Select a PDF File</p>
-                                <button class="btn-primary" onclick="document.getElementById('pdfToImgInput').click()">Choose PDF</button>
-                            </div>
-                        </div>
-                        <div id="pdfToImgEditorArea" style="display:none; text-align:center;">
-                            <h4 id="pdfToImgCount" style="margin-bottom: 1rem;">Extracting Pages...</h4>
-                            <div id="pdfToImgResults" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; max-height: 400px; overflow-y: auto; margin-bottom: 1.5rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px;"></div>
-                            <button class="btn-secondary" onclick="window.resetPdfToImgTool()">Upload New PDF</button>
-                        </div>
-                    </section>
-                </div>
-
-                <!-- TOOL: AI BACKGROUND UTILS (Remove & Blur) -->
-                <div class="tool-view" id="view-ai-bg" style="display: none;">
-                    <div class="hero-header">
-                        <h2 id="aiBgTitle">AI Background Tool</h2>
-                        <p class="hint-text" style="color:var(--text-muted);">Powered by fully private, on-device Machine Learning.</p>
-                    </div>
-                    <section class="workspace glass-panel">
-                        <div class="upload-area" id="aiBgUploadArea">
-                            <input type="file" id="aiBgInput" accept="image/png, image/jpeg, image/webp" hidden>
-                            <div class="upload-content">
-                                <p class="upload-text">Select an Image</p>
-                                <button class="btn-primary" onclick="document.getElementById('aiBgInput').click()">Choose Image</button>
-                            </div>
-                        </div>
-                        <div id="aiBgEditorArea" style="display:none; text-align:center;">
-                            <div class="image-container" style="margin-bottom: 1rem; height: 350px;">
-                                <img id="aiBgPreview" src="" alt="Preview">
-                            </div>
-                            
-                            <div id="aiBgOptions" style="display:none; justify-content: center; gap: 1rem; align-items: center; margin-bottom: 1rem;">
-                                <span style="font-size: 0.9rem;">Change Background: </span>
-                                <input type="color" id="aiBgColor" value="#ffffff" style="cursor: pointer; width: 30px; height: 30px; border: none; background: transparent;">
-                                <button class="btn-primary-outline btn-small" id="applyAiBgColorBtn">Apply Color</button>
-                                <button class="btn-primary-outline btn-small" onclick="window.resetAiBgColor()">Transparent</button>
-                            </div>
-
-                            <h4 id="aiBgStatus" style="margin-bottom: 1rem; color: #facc15;">Ready to Process</h4>
-                            <div style="display: flex; gap: 1rem; justify-content: center;">
-                                <button class="btn-primary pulse-btn" id="runAiBtn">Process Image (May take a minute)</button>
-                                <button class="btn-primary" id="downloadAiBtn" style="display:none;">Download Result</button>
-                                <button class="btn-secondary" onclick="window.resetAiBgTool()">Cancel</button>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                <!-- GENERIC TOOL PLACEHOLDER -->
-                <div class="tool-view" id="view-coming-soon" style="display: none;">
-                    <div class="hero-header">
-                        <h2 id="comingSoonTitle">Tool Name</h2>
-                    </div>
-                    <section class="workspace glass-panel" style="text-align: center; padding: 4rem 2rem;">
-                        <i class="fa-solid fa-code" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                        <h3>Advanced AI Feature Integration</h3>
-                        <p style="color: var(--text-muted); margin-top: 1rem;">This high-performance client-side tool is currently being built into the engine.</p>
-                        <button class="btn-secondary" style="margin-top: 2rem;" onclick="switchTool('view-resize')">Return to Image Resizer</button>
-                    </section>
-                </div>
-            </div>
-
-            <!-- Right Sidebar -->
-            <aside class="sidebar">
-                <a href="#" class="sidebar-link single-link" onclick="window.switchTool('view-resize'); return false;">
-                    <span class="dot red-dot"></span> Resize / Compress Image
-                </a>
+        <main>
+            <section class="hero-section">
+                <h1 class="gradient-text">Resize Anything, Instantly.</h1>
+                <p class="subtitle">Pixel-perfect resizing for signatures, passport photos, and documents. No server uploads needed.</p>
                 
-                <div class="sidebar-grid">
-                    <a href="#" class="sidebar-link" onclick="window.switchTool('view-pdf-img'); return false;">PDF To Images</a>
-                    <a href="#" class="sidebar-link" onclick="window.openAiTool('remove'); return false;">Remove Background</a>
-                    <a href="#" class="sidebar-link" onclick="window.showComingSoon('Advanced PDF Tool'); return false;">Advanced PDF Tool</a>
-                    <a href="#" class="sidebar-link" onclick="window.switchTool('view-img-pdf'); return false;"><span class="dot red-dot"></span> Images To PDF</a>
-                    <a href="#" class="sidebar-link" onclick="window.switchTool('view-signature'); return false;">Signature Maker</a>
-                    <a href="#" class="sidebar-link" onclick="window.openAiTool('blur'); return false;">Blur Background</a>
+                <div class="tools-grid">
+                    <button class="tool-card" onclick="selectPreset('passport')">
+                        <div class="tool-icon"><i class="fa-solid fa-id-badge"></i></div>
+                        <h3>Passport Photo</h3>
+                        <p>3.5 x 4.5 cm</p>
+                    </button>
+                    <button class="tool-card" onclick="selectPreset('signature')">
+                        <div class="tool-icon"><i class="fa-solid fa-signature"></i></div>
+                        <h3>Signature</h3>
+                        <p>256 x 64 px</p>
+                    </button>
+                    <button class="tool-card active" onclick="selectPreset('custom')">
+                        <div class="tool-icon"><i class="fa-solid fa-expand"></i></div>
+                        <h3>Custom Size</h3>
+                        <p>Any dimension</p>
+                    </button>
                 </div>
-                
-                <a href="#" class="sidebar-link single-link" onclick="window.showComingSoon('Increase Image Quality'); return false;">
-                    <span class="dot red-dot"></span> Increase Image Quality
-                </a>
-            </aside>
+            </section>
+
+            <section class="workspace glass-panel">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" hidden>
+                    <div class="upload-content">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <h2>Drag & Drop your file here</h2>
+                        <p>or click to browse from your device</p>
+                        <button class="btn-primary" onclick="document.getElementById('fileInput').click()">Select File</button>
+                    </div>
+                </div>
+
+                <div class="editor-area" id="editorArea" style="display: none;">
+                    <div class="preview-section">
+                        <div class="image-container">
+                            <img id="imagePreview" src="" alt="Preview">
+                        </div>
+                        <div class="file-info">
+                            <span id="originalInfo"><i class="fa-solid fa-image"></i> Original: 0x0 | 0 KB</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                            <span id="newInfo" class="highlight"><i class="fa-solid fa-compress"></i> New: 0x0 | ~0 KB</span>
+                        </div>
+                    </div>
+
+                    <div class="controls-section glass-panel-inner">
+                        <h3>Resize Settings</h3>
+                        
+                        <div class="control-group">
+                            <label>Resize By</label>
+                            <div class="segmented-control">
+                                <button class="segment active" data-by="pixels">Pixels</button>
+                                <button class="segment" data-by="percentage">Percentage</button>
+                            </div>
+                        </div>
+
+                        <div class="dimensions-grid">
+                            <div class="input-group">
+                                <label>Width</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="resizeWidth" value="1080">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                            
+                            <div class="lock-aspect">
+                                <button id="lockRatioBtn" class="active" title="Lock Aspect Ratio">
+                                    <i class="fa-solid fa-link"></i>
+                                </button>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Height</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="resizeHeight" value="1080">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>Format</label>
+                            <select id="exportFormat" class="modern-select">
+                                <option value="image/jpeg">JPG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group" id="qualityGroup">
+                            <label>Quality (<span id="qualityValue">90</span>%)</label>
+                            <input type="range" id="exportQuality" min="10" max="100" value="90" class="modern-range">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-secondary" id="cancelBtn">Cancel</button>
+                            <button class="btn-primary pulse-btn" id="downloadBtn">
+                                <i class="fa-solid fa-download"></i> Download Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
+        
+        <footer>
+            <p>&copy; 2026 PixelPerfect. Designed for speed and privacy.</p>
+        </footer>
     </div>
 
     <script src="script.js"></script>
