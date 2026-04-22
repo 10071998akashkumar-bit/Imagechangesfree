@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelPerfect - Premium Image Resizer</title>
+    <title>SizeBadlo - Premium Image Resizer</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.3.0/dist/imgly-background-removal.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 </head>
 <body>
     <div class="bg-mesh">
@@ -21,17 +23,17 @@
     <div class="app-container">
         <header class="glass-nav">
             <div class="logo">
-                <i class="fa-solid fa-compress"></i>
-                <span>PixelPerfect</span>
+                <i class="fa-solid fa-expand"></i>
+                <span>SizeBadlo</span>
             </div>
             <nav class="desktop-nav">
-                <a href="#" onclick="window.showComingSoon('Merge PDFs'); return false;">Merge PDF's</a>
-                <a href="#" class="active" onclick="window.switchTool('view-resize'); return false;">Resize Image Pixel</a>
-                <a href="#" onclick="window.switchTool('view-resize'); window.selectExamPreset('photo'); return false;">Passport Size Photo</a>
-                <a href="#" onclick="window.showComingSoon('Convert Image Format'); return false;">Convert Image <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i></a>
-                <a href="#" onclick="window.switchTool('view-resize'); document.getElementById('compressAlso').checked = true; document.getElementById('compressAlso').dispatchEvent(new Event('change')); return false;">Compress Image</a>
-                <a href="#" onclick="window.showComingSoon('Compress PDF'); return false;">Compress PDF</a>
-                <a href="#" onclick="window.showComingSoon('Crop Image'); return false;">Crop Image</a>
+                <a href="#" onclick="window.activateNav(this); window.showComingSoon('Merge PDFs'); return false;">Merge PDF's</a>
+                <a href="#" class="active" onclick="window.activateNav(this); window.switchTool('view-resize'); return false;">Resize Image Pixel</a>
+                <a href="#" onclick="window.activateNav(this); window.switchTool('view-resize'); window.selectExamPreset('state-photo'); return false;">Passport Size Photo</a>
+                <a href="#" onclick="window.activateNav(this); window.showComingSoon('Convert Image Format'); return false;">Convert Image <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i></a>
+                <a href="#" onclick="window.activateNav(this); window.switchTool('view-resize'); document.getElementById('compressAlso').checked = true; document.getElementById('compressAlso').dispatchEvent(new Event('change')); return false;">Compress Image</a>
+                <a href="#" onclick="window.activateNav(this); window.showComingSoon('Compress PDF'); return false;">Compress PDF</a>
+                <a href="#" onclick="window.activateNav(this); window.switchTool('view-crop'); return false;">Crop Image</a>
             </nav>
         </header>
 
@@ -347,6 +349,46 @@
                                 <button class="btn-primary pulse-btn" id="runAiBtn">Process Image (May take a minute)</button>
                                 <button class="btn-primary" id="downloadAiBtn" style="display:none;">Download Result</button>
                                 <button class="btn-secondary" onclick="window.resetAiBgTool()">Cancel</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- TOOL: CROP IMAGE -->
+                <div class="tool-view" id="view-crop" style="display: none;">
+                    <div class="hero-header">
+                        <h2>Crop Image Online</h2>
+                        <p class="hint-text" style="color:var(--text-muted);">Quickly crop and adjust your images with precision.</p>
+                    </div>
+                    
+                    <section class="workspace glass-panel">
+                        <div class="upload-area" id="cropUploadArea">
+                            <input type="file" id="cropFileInput" accept="image/png, image/jpeg, image/webp" hidden>
+                            <div class="upload-content">
+                                <p class="upload-text">Select Or Drag & Drop Image Here</p>
+                                <button class="btn-primary" onclick="document.getElementById('cropFileInput').click()">Select Image</button>
+                            </div>
+                        </div>
+
+                        <div class="editor-area" id="cropEditorArea" style="display: none;">
+                            <div class="image-container" style="max-height: 500px; padding: 0;">
+                                <img id="cropImagePreview" src="" alt="Crop Preview" style="max-width: 100%; display: block;">
+                            </div>
+
+                            <div class="controls-section glass-panel-inner" style="margin-top: 1rem;">
+                                <div class="center-group" style="flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+                                    <span style="font-size: 0.9rem; color: var(--text-muted); margin-right: 0.5rem;">Aspect Ratio:</span>
+                                    <button class="btn-secondary btn-small" onclick="window.setCropRatio(NaN)">Free</button>
+                                    <button class="btn-secondary btn-small" onclick="window.setCropRatio(1)">1:1 (Square)</button>
+                                    <button class="btn-secondary btn-small" onclick="window.setCropRatio(4/3)">4:3</button>
+                                    <button class="btn-secondary btn-small" onclick="window.setCropRatio(16/9)">16:9</button>
+                                    <button class="btn-secondary btn-small" onclick="window.setCropRatio(2/3)">2:3 (Portrait)</button>
+                                </div>
+                                
+                                <div class="action-buttons center-group">
+                                    <button class="btn-primary pulse-btn" id="performCropBtn">Crop & Download</button>
+                                    <button class="btn-secondary" onclick="window.resetCropTool()">Cancel</button>
+                                </div>
                             </div>
                         </div>
                     </section>
