@@ -27,13 +27,15 @@
                 <span>SizeBadlo</span>
             </div>
             <nav class="desktop-nav">
-                <a href="#" onclick="window.activateNav(this); window.showComingSoon('Merge PDFs'); return false;">Merge PDF's</a>
-                <a href="#" class="active" onclick="window.activateNav(this); window.switchTool('view-resize'); return false;">Resize Image Pixel</a>
+                <a href="#" class="active" onclick="window.goHome(this); return false;"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="#" onclick="window.activateNav(this); window.switchTool('view-img-pdf'); return false;">Images to PDF</a>
+                <a href="#" onclick="window.activateNav(this); window.switchTool('view-resize'); return false;">Resize Image Pixel</a>
                 <a href="#" onclick="window.activateNav(this); window.switchTool('view-resize'); window.selectExamPreset('state-photo'); return false;">Passport Size Photo</a>
-                <a href="#" onclick="window.activateNav(this); window.showComingSoon('Convert Image Format'); return false;">Convert Image <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i></a>
+                <a href="#" onclick="window.activateNav(this); window.switchTool('view-convert'); return false;">Convert Image <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i></a>
                 <a href="#" onclick="window.activateNav(this); window.switchTool('view-resize'); document.getElementById('compressAlso').checked = true; document.getElementById('compressAlso').dispatchEvent(new Event('change')); return false;">Compress Image</a>
-                <a href="#" onclick="window.activateNav(this); window.showComingSoon('Compress PDF'); return false;">Compress PDF</a>
+                <a href="#" onclick="window.activateNav(this); window.switchTool('view-pdf-img'); return false;">PDF to Images</a>
                 <a href="#" onclick="window.activateNav(this); window.switchTool('view-crop'); return false;">Crop Image</a>
+                <a href="#" onclick="window.activateNav(this); window.switchTool('view-feedback'); return false;"><i class="fa-solid fa-comment-dots"></i> Suggestion</a>
             </nav>
         </header>
 
@@ -318,6 +320,50 @@
                     </section>
                 </div>
 
+                <!-- TOOL: CONVERT IMAGE -->
+                <div class="tool-view" id="view-convert" style="display: none;">
+                    <div class="hero-header">
+                        <h2>Image Converter & Formatter</h2>
+                        <p class="hint-text" style="color:var(--text-muted);">Convert images to any format with fixed size optimization.</p>
+                    </div>
+                    <section class="workspace glass-panel">
+                        <div class="upload-area" id="convertUploadArea">
+                            <input type="file" id="convertFileInput" accept="image/*" hidden>
+                            <div class="upload-content">
+                                <p class="upload-text">Select Image to Convert</p>
+                                <button class="btn-primary" onclick="document.getElementById('convertFileInput').click()">Choose Image</button>
+                            </div>
+                        </div>
+                        <div id="convertEditorArea" style="display:none; text-align:center;">
+                            <div class="image-container" style="margin-bottom: 1.5rem; height: 200px;">
+                                <img id="convertPreview" src="" alt="Preview">
+                            </div>
+                            
+                            <div class="controls-section glass-panel-inner">
+                                <div class="radio-group center-group">
+                                    <span>Target Format: </span>
+                                    <label><input type="radio" name="convFormat" value="image/jpeg" checked> JPG</label>
+                                    <label><input type="radio" name="convFormat" value="image/png"> PNG</label>
+                                    <label><input type="radio" name="convFormat" value="image/webp"> WEBP</label>
+                                </div>
+                                
+                                <div class="checkbox-group center-group" style="margin-top: 1rem;">
+                                    <label><input type="checkbox" id="convFixedSize"> Set Fixed File Size (KB)</label>
+                                </div>
+                                
+                                <div id="convSizeOptions" style="display: none;" class="center-group">
+                                    <input type="number" id="convTargetKb" placeholder="Example: 50" style="width: 150px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: white; padding: 0.5rem; border-radius: 4px; text-align: center;">
+                                </div>
+
+                                <div class="action-buttons center-group" style="margin-top: 1.5rem;">
+                                    <button class="btn-primary pulse-btn" id="convertNowBtn">Convert & Download</button>
+                                    <button class="btn-secondary" onclick="window.resetConvertTool()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
                 <!-- TOOL: AI BACKGROUND UTILS (Remove & Blur) -->
                 <div class="tool-view" id="view-ai-bg" style="display: none;">
                     <div class="hero-header">
@@ -390,6 +436,42 @@
                                     <button class="btn-secondary" onclick="window.resetCropTool()">Cancel</button>
                                 </div>
                             </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- TOOL: FEEDBACK / SUGGESTION -->
+                <div class="tool-view" id="view-feedback" style="display: none;">
+                    <div class="hero-header">
+                        <h2>Help Us Improve</h2>
+                        <p class="hint-text" style="color:var(--text-muted);">Your suggestions help us make SizeBadlo better for everyone.</p>
+                    </div>
+                    <section class="workspace glass-panel" style="max-width: 600px; margin: 0 auto;">
+                        <form id="feedbackForm" class="editor-area">
+                            <div class="controls-section glass-panel-inner" style="text-align: left; background: rgba(255,255,255,0.03);">
+                                <div style="margin-bottom: 1.5rem;">
+                                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-main);">Your Name</label>
+                                    <input type="text" id="feedbackName" placeholder="Enter your name" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: white; padding: 0.8rem; border-radius: var(--radius-sm);">
+                                </div>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-main);">Email Address</label>
+                                    <input type="email" id="feedbackEmail" placeholder="Enter your email" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: white; padding: 0.8rem; border-radius: var(--radius-sm);">
+                                </div>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-main);">Your Suggestion <span style="color: #ef4444;">*</span></label>
+                                    <textarea id="feedbackMessage" required placeholder="How can we improve this website?" style="width: 100%; min-height: 150px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: white; padding: 0.8rem; border-radius: var(--radius-sm); font-family: inherit; resize: vertical;"></textarea>
+                                </div>
+                                
+                                <div class="action-buttons center-group">
+                                    <button type="submit" class="btn-primary pulse-btn" style="width: 100%;">Submit Suggestion</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="feedbackSuccess" style="display: none; padding: 3rem 1rem;">
+                            <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: #10b981; margin-bottom: 1.5rem;"></i>
+                            <h3 style="margin-bottom: 1rem;">Thank You!</h3>
+                            <p style="color: var(--text-muted);">Your suggestion has been received. We appreciate your feedback!</p>
+                            <button class="btn-secondary" style="margin-top: 2rem;" onclick="window.goHome(document.querySelector('.desktop-nav a'))">Return Home</button>
                         </div>
                     </section>
                 </div>
